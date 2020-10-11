@@ -37,17 +37,6 @@ void td_render_fullrgb_charline(TextDisplay* disp, uint16_t line, uint8_t* tbuff
     uint16_t CharSet_CharWidth = ceil((float)disp->HCharSize / 8);
     uint16_t CharSet_CharSize = CharSet_CharWidth * (disp->VCharSize - 1);
     uint32_t CharSet_CurrentCharOffset;
-    //Bit mask index
-    const uint8_t MaskIndex[8] = {
-        0b10000000,
-        0b01000000,
-        0b00100000,
-        0b00010000,
-        0b00001000,
-        0b00000100,
-        0b00000010,
-        0b00000001,
-    };
     //Current character data
     TextDisplay_Character* CurrentCharPtr;
     TextDisplay_ColorPalette* CurrentFGColor;
@@ -80,7 +69,7 @@ void td_render_fullrgb_charline(TextDisplay* disp, uint16_t line, uint8_t* tbuff
             CharSet_CurrentLine = CharSet_CurrentCharOffset + (CharSet_CharWidth * y);
             for(x=0; x<lx; x++) {
                 //Split character line to bits
-                CharBit = disp->CharSet->Chars[CharSet_CurrentLine + (x >> 3)] & MaskIndex[x % 8];
+                CharBit = disp->CharSet->Chars[CharSet_CurrentLine + (x >> 3)] << x & 0b10000000;
                 //Get color
                 CurrentColor = (
                     CharBit ? CurrentFGColor : CurrentBGColor
