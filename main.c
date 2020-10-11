@@ -130,8 +130,6 @@ int main(int argc, char** args) {
                     }
                 }
             }
-            //Clean buffer
-            memset(display_buffer, 0, test_bufsize);
         }
         
         SDL_UpdateWindowSurface(window);
@@ -141,6 +139,8 @@ int main(int argc, char** args) {
         if(totalframecounter % 1 == 0) {
             td->HCharOffset++;
             td->VCharOffset++;
+            td->HCharOffset %= td->HCharRes;
+            td->VCharOffset %= td->VCharRes;
         }
         
         //FPS counter
@@ -166,6 +166,7 @@ int main(int argc, char** args) {
         }
     }
         
+    printf("\n");
     
     //Free textdisplay stuff and then free the textdisplay struct itself
     td_display_free(td);
